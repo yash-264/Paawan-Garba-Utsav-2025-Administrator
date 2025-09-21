@@ -17,7 +17,7 @@ export default function AdminDashboard() {
         <nav className="flex-1 p-4 space-y-3">
           <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Dashboard</a>
           <a href="#" className="block px-3 py-2 rounded bg-[#a83232]">Bookings</a>
-          <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Settings</a>
+          <a href="/qrscan" className="block px-3 py-2 rounded hover:bg-[#a83232]">Scan QR</a>
           <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Logout</a>
         </nav>
       </aside>
