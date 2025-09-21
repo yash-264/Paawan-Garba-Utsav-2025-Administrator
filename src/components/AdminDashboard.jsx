@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { getAllParticipants } from "../firebase/helpers/firestoreHelpers";
-import { Link } from "react-router-dom"; // <- Import Link from React Router
+import { Link ,useNavigate} from "react-router-dom"; // <- Import Link from React Router
 
 export default function AdminDashboard() {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
+     useEffect(() => {
+        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+        if (!isLoggedIn) {
+          navigate("/", { replace: true });
+        }
+        fetchParticipants();
+      }, [navigate]);
+    
+  
   const fetchParticipants = async () => {
     try {
       const data = await getAllParticipants();
@@ -21,6 +31,11 @@ export default function AdminDashboard() {
     fetchParticipants();
   }, []);
 
+  const handleLogout = () => {
+    sessionStorage.clear(); // Clear everything from sessionStorage
+    navigate("/", { replace: true }); // Redirect to login and replace history
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -29,10 +44,12 @@ export default function AdminDashboard() {
           Admin Panel
         </div>
         <nav className="flex-1 p-4 space-y-3">
-          <Link to="/" className="block px-3 py-2 rounded hover:bg-[#a83232]">Dashboard</Link>
+          <Link to="/Dashboard" className="block px-3 py-2 rounded hover:bg-[#a83232]">Dashboard</Link>
           <Link to="/AdminDashboard" className="block px-3 py-2 rounded bg-[#a83232]">Bookings</Link>
           <Link to="/ScanPass" className="block px-3 py-2 rounded hover:bg-[#a83232]">Scan Pass</Link>
-          <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Logout</a>
+           <button onClick={handleLogout} className="w-full text-left px-3 py-2 rounded hover:bg-[#a83232]">
+            Logout
+          </button>
         </nav>
       </aside>
 

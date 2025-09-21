@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { getAllParticipants } from "../firebase/helpers/firestoreHelpers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  // Check login on every render
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    if (!isLoggedIn) {
+      navigate("/", { replace: true });
+    }
+    fetchParticipants();
+  }, [navigate]);
 
   const fetchParticipants = async () => {
     try {
@@ -17,12 +27,13 @@ export default function AdminDashboard() {
     }
   };
 
-  useEffect(() => {
-    fetchParticipants();
-  }, []);
+  const handleLogout = () => {
+    sessionStorage.clear(); // Clear everything from sessionStorage
+    navigate("/", { replace: true }); // Redirect to login and replace history
+  };
 
   const totalParticipants = participants.length;
-  const totalAttending = participants.filter(p => p.isUsed).length;
+  const totalAttending = participants.filter((p) => p.isUsed).length;
   const totalNonAttending = totalParticipants - totalAttending;
 
   return (
@@ -33,16 +44,17 @@ export default function AdminDashboard() {
           Admin Panel
         </div>
         <nav className="flex-1 p-4 space-y-3">
-          <Link to="/" className="block px-3 py-2 rounded hover:bg-[#a83232] bg-[#a83232]">Dashboard</Link>
+          <Link to="/Dashboard" className="block px-3 py-2 rounded hover:bg-[#a83232] bg-[#a83232]">Dashboard</Link>
           <Link to="/AdminDashboard" className="block px-3 py-2 rounded hover:bg-[#a83232]">Bookings</Link>
           <Link to="/ScanPass" className="block px-3 py-2 rounded hover:bg-[#a83232]">Scan Pass</Link>
-          <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Logout</a>
+          <button onClick={handleLogout} className="w-full text-left px-3 py-2 rounded hover:bg-[#a83232]">
+            Logout
+          </button>
         </nav>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
-        {/* Header */}
         <header className="flex items-center justify-between p-4 bg-white shadow-md">
           <h1 className="text-xl font-bold text-gray-700">Dashboard</h1>
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold">
@@ -66,7 +78,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Optional Table of Participants */}
+        {/* Optional Table */}
         <div className="p-6 overflow-x-auto flex-1">
           {loading ? (
             <p className="text-gray-600">Loading participants...</p>
