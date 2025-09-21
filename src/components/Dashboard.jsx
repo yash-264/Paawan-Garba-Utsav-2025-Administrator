@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllParticipants } from "../firebase/helpers/firestoreHelpers";
-import { Link } from "react-router-dom"; // <- Import Link from React Router
+import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
   const [participants, setParticipants] = useState([]);
@@ -21,6 +21,10 @@ export default function AdminDashboard() {
     fetchParticipants();
   }, []);
 
+  const totalParticipants = participants.length;
+  const totalAttending = participants.filter(p => p.isUsed).length;
+  const totalNonAttending = totalParticipants - totalAttending;
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -29,8 +33,8 @@ export default function AdminDashboard() {
           Admin Panel
         </div>
         <nav className="flex-1 p-4 space-y-3">
-          <Link to="/" className="block px-3 py-2 rounded hover:bg-[#a83232]">Dashboard</Link>
-          <Link to="/AdminDashboard" className="block px-3 py-2 rounded bg-[#a83232]">Bookings</Link>
+          <Link to="/" className="block px-3 py-2 rounded hover:bg-[#a83232] bg-[#a83232]">Dashboarb</Link>
+          <Link to="/AdminDashboard" className="block px-3 py-2 rounded hover:bg-[#a83232]">Bookings</Link>
           <Link to="/ScanPass" className="block px-3 py-2 rounded hover:bg-[#a83232]">Scan Pass</Link>
           <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Logout</a>
         </nav>
@@ -40,18 +44,34 @@ export default function AdminDashboard() {
       <main className="flex-1 flex flex-col">
         {/* Header */}
         <header className="flex items-center justify-between p-4 bg-white shadow-md">
-          <h1 className="text-xl font-bold text-gray-700">Booking Submissions</h1>
+          <h1 className="text-xl font-bold text-gray-700">Dashboard</h1>
           <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center font-bold">
             A
           </div>
         </header>
 
-        {/* Table */}
+        {/* Summary Cards */}
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center border-t-4 border-[#800000]">
+            <h2 className="text-gray-500 font-semibold mb-2">Total Participants</h2>
+            <p className="text-3xl font-bold text-[#800000]">{totalParticipants}</p>
+          </div>
+          <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center border-t-4 border-green-500">
+            <h2 className="text-gray-500 font-semibold mb-2">Total Attending</h2>
+            <p className="text-3xl font-bold text-green-600">{totalAttending}</p>
+          </div>
+          <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center justify-center border-t-4 border-red-500">
+            <h2 className="text-gray-500 font-semibold mb-2">Total Non-Attending</h2>
+            <p className="text-3xl font-bold text-red-600">{totalNonAttending}</p>
+          </div>
+        </div>
+
+        {/* Optional Table of Participants */}
         <div className="p-6 overflow-x-auto flex-1">
           {loading ? (
             <p className="text-gray-600">Loading participants...</p>
           ) : participants.length === 0 ? (
-            <p className="text-gray-600">No bookings found.</p>
+            <p className="text-gray-600">No participants found.</p>
           ) : (
             <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
               <thead className="bg-[#800000] text-white">
