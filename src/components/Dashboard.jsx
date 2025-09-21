@@ -33,7 +33,7 @@ export default function AdminDashboard() {
           Admin Panel
         </div>
         <nav className="flex-1 p-4 space-y-3">
-          <Link to="/" className="block px-3 py-2 rounded hover:bg-[#a83232] bg-[#a83232]">Dashboarb</Link>
+          <Link to="/" className="block px-3 py-2 rounded hover:bg-[#a83232] bg-[#a83232]">Dashboard</Link>
           <Link to="/AdminDashboard" className="block px-3 py-2 rounded hover:bg-[#a83232]">Bookings</Link>
           <Link to="/ScanPass" className="block px-3 py-2 rounded hover:bg-[#a83232]">Scan Pass</Link>
           <a href="#" className="block px-3 py-2 rounded hover:bg-[#a83232]">Logout</a>
