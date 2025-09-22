@@ -1,19 +1,37 @@
-import { useState } from 'react'
-import './App.css'
-import AdminDashboard from './components/AdminDashboard'
-import { Routes, Route } from "react-router-dom";
-import Scan from './components/ScanPass';
+import { useEffect } from 'react';
+import Page from './Components/Page';
+import './App.css';
 
 function App() {
+  useEffect(() => {
+    // Disable right-click globally
+    const handleContextMenu = (e) => e.preventDefault();
+    document.addEventListener('contextmenu', handleContextMenu);
+
+    // Disable common inspect shortcuts (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+Shift+C)
+    const handleKeyDown = (e) => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'U')
+      ) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <>
-      <Routes>
-        <Route path='/' element={<AdminDashboard />} />
-        <Route path='/qrscan' element={<Scan/>} />
-      </Routes>
+      <Page />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -12,8 +12,8 @@ export default function Login() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const correctId = "Yashgarba@9302827112";
-    const correctKey = "PGUgarba#2025";
+    const correctId = "12345";
+    const correctKey = "12345";
 
     if (accessId === correctId && accessKey === correctKey) {
       sessionStorage.setItem("isLoggedIn", "true");

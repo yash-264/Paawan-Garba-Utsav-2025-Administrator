@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react"; 
 import jsQR from "jsqr";
 import {
   getParticipantById,
@@ -207,10 +207,9 @@ export default function Scan() {
           <div className="text-sm sm:text-base space-y-1">
             <p><strong>ID:</strong> {scanResult.participantId}</p>
             <p><strong>Name:</strong> {scanResult.name}</p>
-            <p><strong>Age:</strong> {scanResult.age}</p>
+            <p><strong>Pass Type:</strong> {scanResult.passType}</p> {/* updated */}
             <p><strong>Mobile:</strong> {scanResult.mobile}</p>
-            <p><strong>Gender:</strong> {scanResult.gender}</p>
-            <p><strong>Group Size:</strong> {scanResult.groupSize}</p>
+            <p><strong>Number of People:</strong> {scanResult.numberOfPeople}</p> {/* updated */}
             <p><strong>Payment ID:</strong> {scanResult.paymentId}</p>
             <p>
               <strong>Direction:</strong>{" "}

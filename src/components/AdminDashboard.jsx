@@ -86,10 +86,10 @@ export default function AdminDashboard() {
                   <th className="py-2 px-3 text-left">S.No</th>
                   <th className="py-2 px-3 text-left">Participant ID</th>
                   <th className="py-2 px-3 text-left">Name</th>
-                  <th className="py-2 px-3 text-left">Age</th>
+                  <th className="py-2 px-3 text-left">Pass Type</th> {/* changed */}
                   <th className="py-2 px-3 text-left">Mobile</th>
-                  <th className="py-2 px-3 text-left">Gender</th>
-                  <th className="py-2 px-3 text-left">Group Size</th>
+                 
+                  <th className="py-2 px-3 text-left">Number of People</th> {/* changed */}
                   <th className="py-2 px-3 text-left">Entered</th>
                   <th className="py-2 px-3 text-left">Payment ID</th>
                 </tr>
@@ -100,10 +100,10 @@ export default function AdminDashboard() {
                     <td className="py-2 px-3">{index + 1}</td>
                     <td className="py-2 px-3">{p.participantId}</td>
                     <td className="py-2 px-3">{p.name}</td>
-                    <td className="py-2 px-3">{p.age}</td>
+                    <td className="py-2 px-3">{p.passType}</td> {/* was age */}
                     <td className="py-2 px-3">{p.mobile}</td>
-                    <td className="py-2 px-3">{p.gender}</td>
-                    <td className="py-2 px-3">{p.groupSize}</td>
+                   
+                    <td className="py-2 px-3">{p.numberOfPeople}</td> {/* was groupSize */}
                     <td className="py-2 px-3">{p.isUsed ? "Yes" : "No"}</td>
                     <td className="py-2 px-3">{p.paymentId}</td>
                   </tr>
