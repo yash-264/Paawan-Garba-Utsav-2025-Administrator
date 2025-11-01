@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"; 
+import React, { useEffect, useRef, useState } from "react";  
 import jsQR from "jsqr";
 import {
   getParticipantById,
@@ -6,6 +6,7 @@ import {
 } from "../firebase/helpers/firestoreHelpers";
 
 export default function Scan() {
+
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [scanning, setScanning] = useState(false);
@@ -14,6 +15,7 @@ export default function Scan() {
   const [cameraError, setCameraError] = useState("");
   const [direction, setDirection] = useState("inside"); 
   const [switchCard, setSwitchCard] = useState(null);
+
 
   useEffect(() => {
     let animationId;
@@ -87,8 +89,26 @@ export default function Scan() {
       if (participant.isUsed) {
         setSwitchCard(participant);
       } else {
-        await updateParticipant(participant.participantId, { isUsed: true });
+        // --- Minimal change starts here ---
+        // When scanning first time: set isUsed true.
+        // If paymentId equals "DONE DONE YET" (case-insensitive, trimmed),
+        // update it to "DONE - VIA CASH" as well.
+        const updates = { isUsed: true };
+        const paymentIdRaw = participant.paymentId;
+        if (
+          typeof paymentIdRaw === "string" &&
+          paymentIdRaw.trim().toUpperCase() === "NOT DONE YET"
+        ) {
+          updates.paymentId = "DONE - VIA CASH";
+        }
+
+        await updateParticipant(participant.participantId, updates);
+
+        // reflect updates in local object for UI
         participant.isUsed = true;
+        if (updates.paymentId) participant.paymentId = updates.paymentId;
+        // --- Minimal change ends here ---
+
         setDirection("inside");
         setMessage("✅ Participant verified successfully (INSIDE)");
       }
@@ -115,6 +135,7 @@ export default function Scan() {
     }
     setSwitchCard(null);
   };
+
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
@@ -232,4 +253,5 @@ export default function Scan() {
       )}
     </div>
   );
+  
 }
